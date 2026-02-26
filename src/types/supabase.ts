@@ -17,8 +17,11 @@ export interface Post {
   title: string
   description: string
   cover_image: string | null
+  media_urls: string[]
+  media_types: string[]
   category: string
   project_link: string | null
+  pdf_url: string | null
   created_at: string
 }
 
@@ -26,6 +29,8 @@ export interface Highlight {
   id: string
   title: string
   cover_image: string | null
+  media_urls: string[]
+  media_types: string[]
   link: string | null
   created_at: string
 }
@@ -35,6 +40,7 @@ export interface ExploreLink {
   title: string
   icon_image: string | null
   link: string
+  neon_color: string | null
   created_at: string
 }
 
