@@ -47,83 +47,93 @@ export default function PortfolioClient() {
 
   return (
     <div
-      className="min-h-screen relative"
-      style={{ background: isDark ? '#0b0f14' : '#f8fafc', color: isDark ? '#e2e8f0' : '#0f172a', maxWidth: '480px', margin: '0 auto' }}
+      className="min-h-screen"
+      style={{ background: isDark ? '#0b0f14' : '#f8fafc', color: isDark ? '#e2e8f0' : '#0f172a' }}
     >
-      <AnimatePresence mode="wait">
-        {screen === 'home' && (
-          <motion.div
-            key="home"
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.25 }}
-            className="pb-20"
-          >
-            <ProfileHeader
-              profile={profile}
-              postCount={posts.length}
-              onMessage={() => setActiveModal('message')}
-              onServices={() => setActiveModal('services')}
-              onHireMe={() => setActiveModal('message')}
-              isDark={isDark}
-            />
-            <HighlightsRow
-              highlights={highlights}
-              onStoryOpen={(h) => setSelectedStory(h)}
-              isDark={isDark}
-            />
-            <PostsGrid
-              posts={posts}
-              onPostClick={(p) => setSelectedPost(p)}
-              isDark={isDark}
-            />
-          </motion.div>
-        )}
+      {/* Responsive centered wrapper — mobile: full width, tablet: 600px, desktop: 680px */}
+      <div
+        style={{
+          maxWidth: '680px',
+          margin: '0 auto',
+          minHeight: '100vh',
+          position: 'relative',
+        }}
+      >
+        <AnimatePresence mode="wait">
+          {screen === 'home' && (
+            <motion.div
+              key="home"
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.25 }}
+              style={{ paddingBottom: '80px' }}
+            >
+              <ProfileHeader
+                profile={profile}
+                postCount={posts.length}
+                onMessage={() => setActiveModal('message')}
+                onServices={() => setActiveModal('services')}
+                onHireMe={() => setActiveModal('message')}
+                isDark={isDark}
+              />
+              <HighlightsRow
+                highlights={highlights}
+                onStoryOpen={(h) => setSelectedStory(h)}
+                isDark={isDark}
+              />
+              <PostsGrid
+                posts={posts}
+                onPostClick={(p) => setSelectedPost(p)}
+                isDark={isDark}
+              />
+            </motion.div>
+          )}
 
-        {screen === 'resume' && (
-          <motion.div
-            key="resume"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.25 }}
-          >
-            <ResumeScreen
-              resumeUrl={profile?.resume_url || null}
-              onBack={() => setScreen('home')}
-              isDark={isDark}
-            />
-          </motion.div>
-        )}
+          {screen === 'resume' && (
+            <motion.div
+              key="resume"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.25 }}
+            >
+              <ResumeScreen
+                resumeUrl={profile?.resume_url || null}
+                onBack={() => setScreen('home')}
+                isDark={isDark}
+              />
+            </motion.div>
+          )}
 
-        {screen === 'case-studies' && (
-          <motion.div
-            key="case-studies"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            transition={{ duration: 0.25 }}
-          >
-            <CaseStudiesScreen
-              posts={posts}
-              onBack={() => setScreen('home')}
-              isDark={isDark}
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
+          {screen === 'case-studies' && (
+            <motion.div
+              key="case-studies"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.25 }}
+            >
+              <CaseStudiesScreen
+                posts={posts}
+                onBack={() => setScreen('home')}
+                isDark={isDark}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-      {/* Bottom Navigation */}
-      <BottomNav
-        screen={screen}
-        onScreen={setScreen}
-        onExplore={() => setActiveModal('explore')}
-        onThemeToggle={() => setIsDark(!isDark)}
-        isDark={isDark}
-      />
+        {/* Bottom Navigation — fixed within centered container */}
+        <BottomNav
+          screen={screen}
+          onScreen={setScreen}
+          onExplore={() => setActiveModal('explore')}
+          onThemeToggle={() => setIsDark(!isDark)}
+          isDark={isDark}
+        />
+      </div>
 
-      {/* Modals */}
+      {/* Modals — full viewport */}
       <AnimatePresence>
         {activeModal === 'message' && (
           <MessageModal onClose={() => setActiveModal(null)} isDark={isDark} />
