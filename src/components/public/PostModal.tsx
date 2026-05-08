@@ -95,8 +95,19 @@ export default function PostModal({ post, onClose, isDark }: Props) {
         Back
       </motion.button>
 
-      {/* ── MEDIA AREA — fixed aspect ratio, full width ── */}
-      <div style={{ position: 'relative', width: '100%', aspectRatio: '4/3', background: '#000', flexShrink: 0 }}>
+      {/* ── MEDIA AREA — full image visible, no cropping ── */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        minHeight: '260px',
+        maxHeight: '70vh',
+        background: '#000',
+        flexShrink: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+      }}>
         <AnimatePresence mode="wait">
           {currentMedia ? (
             <motion.div
@@ -105,14 +116,14 @@ export default function PostModal({ post, onClose, isDark }: Props) {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.96 }}
               transition={{ duration: 0.22 }}
-              style={{ position: 'absolute', inset: 0 }}
+              style={{ position: 'relative', width: '100%', minHeight: '260px', maxHeight: '70vh', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               {currentMedia.type === 'video' ? (
                 <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                   <video
                     ref={videoRef}
                     src={currentMedia.url}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                    style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', background: '#000' }}
                     playsInline
                     loop
                     onEnded={() => setPlaying(false)}
@@ -148,18 +159,25 @@ export default function PostModal({ post, onClose, isDark }: Props) {
                   </div>
                 </div>
               ) : (
-                <Image
+                // Using <img> so image renders at its natural aspect ratio with no cropping
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
                   src={currentMedia.url}
                   alt={post.title}
-                  fill
-                  sizes="(max-width: 680px) 100vw, 680px"
-                  style={{ objectFit: 'cover' }}
+                  style={{
+                    width: '100%',
+                    height: 'auto',
+                    maxHeight: '70vh',
+                    objectFit: 'contain',
+                    display: 'block',
+                  }}
                 />
               )}
             </motion.div>
           ) : (
             <div style={{
-              position: 'absolute', inset: 0,
+              width: '100%',
+              minHeight: '260px',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               background: 'linear-gradient(135deg, #1a2030, #252d3d)',
             }}>
