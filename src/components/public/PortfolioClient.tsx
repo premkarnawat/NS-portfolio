@@ -6,6 +6,7 @@ import { useProfile } from '@/hooks/useProfile'
 import { usePosts } from '@/hooks/usePosts'
 import { useHighlights } from '@/hooks/useHighlights'
 import { useExploreLinks } from '@/hooks/useExploreLinks'
+import { useCertifications } from '@/hooks/useCertifications'
 import ProfileHeader from './ProfileHeader'
 import HighlightsRow from './HighlightsRow'
 import PostsGrid from './PostsGrid'
@@ -17,9 +18,10 @@ import PostModal from './PostModal'
 import StoryViewer from './StoryViewer'
 import ResumeScreen from './ResumeScreen'
 import CaseStudiesScreen from './CaseStudiesScreen'
+import CertificationsScreen from './CertificationsScreen'
 import type { Post, Highlight } from '@/types/supabase'
 
-export type Screen = 'home' | 'resume' | 'case-studies'
+export type Screen = 'home' | 'resume' | 'case-studies' | 'certifications'
 export type Modal = 'message' | 'services' | 'explore' | null
 
 export default function PortfolioClient() {
@@ -27,6 +29,7 @@ export default function PortfolioClient() {
   const { posts, loading: postsLoading } = usePosts()
   const { highlights } = useHighlights()
   const { links } = useExploreLinks()
+  const { certifications } = useCertifications()
 
   const [screen, setScreen] = useState<Screen>('home')
   const [activeModal, setActiveModal] = useState<Modal>(null)
@@ -50,7 +53,7 @@ export default function PortfolioClient() {
       className="min-h-screen"
       style={{ background: isDark ? '#0b0f14' : '#f8fafc', color: isDark ? '#e2e8f0' : '#0f172a' }}
     >
-      {/* Responsive centered wrapper — mobile: full width, tablet: 600px, desktop: 680px */}
+      {/* Responsive centered wrapper */}
       <div
         style={{
           maxWidth: '680px',
@@ -74,7 +77,7 @@ export default function PortfolioClient() {
                 postCount={posts.length}
                 onMessage={() => setActiveModal('message')}
                 onServices={() => setActiveModal('services')}
-                onHireMe={() => setActiveModal('message')}
+                onExploreMe={() => setActiveModal('explore')}
                 isDark={isDark}
               />
               <HighlightsRow
@@ -85,6 +88,22 @@ export default function PortfolioClient() {
               <PostsGrid
                 posts={posts}
                 onPostClick={(p) => setSelectedPost(p)}
+                isDark={isDark}
+              />
+            </motion.div>
+          )}
+
+          {screen === 'certifications' && (
+            <motion.div
+              key="certifications"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.25 }}
+            >
+              <CertificationsScreen
+                certifications={certifications}
+                onBack={() => setScreen('home')}
                 isDark={isDark}
               />
             </motion.div>
@@ -123,17 +142,16 @@ export default function PortfolioClient() {
           )}
         </AnimatePresence>
 
-        {/* Bottom Navigation — fixed within centered container */}
+        {/* Bottom Navigation */}
         <BottomNav
           screen={screen}
           onScreen={setScreen}
-          onExplore={() => setActiveModal('explore')}
           onThemeToggle={() => setIsDark(!isDark)}
           isDark={isDark}
         />
       </div>
 
-      {/* Modals — full viewport */}
+      {/* Modals */}
       <AnimatePresence>
         {activeModal === 'message' && (
           <MessageModal onClose={() => setActiveModal(null)} isDark={isDark} />
