@@ -52,3 +52,15 @@ export interface Message {
   message: string
   created_at: string
 }
+
+export interface Certification {
+  id: string
+  title: string
+  issuer: string
+  issue_date: string | null
+  description: string | null
+  file_url: string | null
+  file_type: 'pdf' | 'image' | null
+  cover_image: string | null
+  created_at: string
+}
