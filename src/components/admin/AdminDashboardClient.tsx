@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import {
-  User, Image as ImageIcon, Link2, Mail, LayoutDashboard,
+  User, Link2, Mail, Award,
   LogOut, Menu, X, Star, Grid3X3
 } from 'lucide-react'
 import toast from 'react-hot-toast'
@@ -14,14 +14,16 @@ import AdminPosts from './AdminPosts'
 import AdminHighlights from './AdminHighlights'
 import AdminExplore from './AdminExplore'
 import AdminMessages from './AdminMessages'
+import AdminCertifications from './AdminCertifications'
 
-type Section = 'profile' | 'posts' | 'highlights' | 'explore' | 'messages'
+type Section = 'profile' | 'posts' | 'highlights' | 'explore' | 'certifications' | 'messages'
 
 const navItems = [
   { id: 'profile' as Section, label: 'Profile', icon: User },
   { id: 'posts' as Section, label: 'Posts', icon: Grid3X3 },
   { id: 'highlights' as Section, label: 'Highlights', icon: Star },
   { id: 'explore' as Section, label: 'Explore Links', icon: Link2 },
+  { id: 'certifications' as Section, label: 'Certifications', icon: Award },
   { id: 'messages' as Section, label: 'Messages', icon: Mail },
 ]
 
@@ -43,6 +45,7 @@ export default function AdminDashboardClient() {
     posts: <AdminPosts />,
     highlights: <AdminHighlights />,
     explore: <AdminExplore />,
+    certifications: <AdminCertifications />,
     messages: <AdminMessages />,
   }
 
