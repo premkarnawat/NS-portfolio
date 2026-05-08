@@ -9,11 +9,11 @@ interface Props {
   postCount: number
   onMessage: () => void
   onServices: () => void
-  onHireMe: () => void
+  onExploreMe: () => void
   isDark: boolean
 }
 
-export default function ProfileHeader({ profile, postCount, onMessage, onServices, onHireMe, isDark }: Props) {
+export default function ProfileHeader({ profile, postCount, onMessage, onServices, onExploreMe, isDark }: Props) {
   const mutedColor = isDark ? '#9ca3af' : '#64748b'
   const borderColor = isDark ? '#252d3d' : '#e2e8f0'
 
@@ -140,7 +140,7 @@ export default function ProfileHeader({ profile, postCount, onMessage, onService
 
         {[
           { label: 'Services', action: onServices },
-          { label: 'Hire Me', action: onHireMe },
+          { label: 'Explore Me', action: onExploreMe },
         ].map(btn => (
           <motion.button
             key={btn.label}
